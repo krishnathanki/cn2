@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+  int u,v,wt;
+  node(int first,int second,int weight){
+      u=first;
+      v=second;
+      wt=weight;
+  }
+};
+int main()
+{
+    int n,m;
+    
+    printf("\nEnter no. of nodes: ");
+    cin>>n;
+    printf("\nEnter no. of edges: ");
+    cin>>m;
+    vector<node> edges;
+    for(int i=0;i<m;i++){
+        printf("\nEnter %d edge: ",i+1);
+        int u,v,wt;
+        cin>>u>>v>>wt;
+        edges.push_back(node(u,v,wt));
+    }
+    printf("\nEnter the source node");
+    int src;
+    cin>>src;
+    int inf=100000;
+    vector<int> dis(n,inf);
+    dis[src]=0;
+    for(int i=1;i<=n-1;i++){
+        for(auto it:edges){
+            if(dis[it.v]>dis[it.u]+it.wt)
+                dis[it.v]=dis[it.u]+it.wt;
+        }
+    }
+    int flag=0;
+    for(auto it:edges){
+        if(dis[it.v]>dis[it.u]+it.wt){
+            flag=1;
+            cout<<"Negative cycle exits!"<<endl;
+            break;
+        }
+    }
+    if(flag==0){
+        for(int i=0;i<n;i++)
+            printf("\nShortest path from %d to %d is %d ",src,i,dis[i]);
+    }
+    
+    return 0;
+}
